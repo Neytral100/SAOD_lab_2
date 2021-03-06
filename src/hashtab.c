@@ -11,3 +11,9 @@ unsigned int hashtab_hash(char* key)
         h = h * hash_mul + (unsigned int)*key++;
     return h % HASHTAB_SIZE;
 }
+
+void hashtab_init(struct listnode** hashtab)
+{
+    for (int i = 0; i < HASHTAB_SIZE; i++)
+        hashtab[i] = NULL;
+}

@@ -7,4 +7,7 @@ struct listnode {
     struct listnode* next;
 };
 
-struct listnode* hashtab[HASHTAB_SIZE]
+struct listnode* hashtab[HASHTAB_SIZE];
+
+unsigned int hashtab_hash(char*);
+void hashtab_init(struct listnode**);
