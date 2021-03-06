@@ -11,3 +11,5 @@ struct listnode* hashtab[HASHTAB_SIZE];
 
 unsigned int hashtab_hash(char*);
 void hashtab_init(struct listnode**);
+void hashtab_add(struct listnode**, char*, int);
+struct listnode* hashtab_lookup(struct listnode**, char*);

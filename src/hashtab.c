@@ -17,3 +17,28 @@ void hashtab_init(struct listnode** hashtab)
     for (int i = 0; i < HASHTAB_SIZE; i++)
         hashtab[i] = NULL;
 }
+
+void hashtab_add(struct listnode** hashtab, char* key, int value)
+{
+    struct listnode* node;
+
+    int index = hashtab_hash(key);
+    node = malloc(sizeof(*node));
+    if (node != NULL) {
+        node->key = key;
+        node->value = value;
+        node->next = hashtab[index];
+        hashtab[index] = node;
+    }
+}
+
+struct listnode* hashtab_lookup(struct listnode** hashtab, char* key)
+{
+    struct listnode* node;
+
+    int index = hashtab_hash(key);
+    for (node = hashtab[index]; node != NULL; node = node->next)
+        if (0 == strcmp(node->key, key))
+            return node;
+    return NULL;
+}
