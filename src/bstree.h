@@ -11,3 +11,4 @@ struct bstree* bstree_lookup(struct bstree*, char*);
 void bstree_delete(struct bstree*, char*);
 struct bstree* bstree_min(struct bstree*);
 struct bstree* bstree_max(struct bstree*);
+void bstree_free(struct bstree* tree);

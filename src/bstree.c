@@ -131,3 +131,18 @@ struct bstree* bstree_max(struct bstree* tree)
     }
     return tree;
 }
+
+void bstree_free(struct bstree* tree)
+{
+    if (tree->left != NULL)
+        bstree_free(tree->left);
+    if (tree->right != NULL)
+        bstree_free(tree->right);
+    /*
+    free(&(tree->value));
+    free(tree->key);
+    free(tree->left);
+    free(tree->right);
+    */
+    free(tree);
+}
