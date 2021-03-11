@@ -9,7 +9,7 @@ void create_array(char** word, int size)
     int size_of_word = 21;
     FILE* pFile;
     if ((pFile = fopen("../results/text.txt", "r")) == NULL)
-        printf("Не удалось открыть файл\n");
+        printf("Error open file\n");
     for (int i = 0; i < size; i++) {
         *(word + i) = malloc(sizeof(char) * size_of_word);
         fgets(*(word + i), size_of_word, pFile);
@@ -30,23 +30,42 @@ void experiment_one()
     int size = 200000;
     char* word[size];
     create_array(word, size);
-    FILE* bstree_pFile;
-    FILE* hashtab_pFile;
+    FILE* bstree_pFile_exp1;
+    FILE* hashtab_pFile_exp1;
+    FILE* bstree_pFile_exp2;
+    FILE* hashtab_pFile_exp2;
+
+    if ((bstree_pFile_exp1 = fopen("../results/bstree1.txt", "w")) == NULL)
+        printf("Error open file bstree1.txt\n");
+    if ((hashtab_pFile_exp1 = fopen("../results/hashtab1.txt", "w")) == NULL)
+        printf("Error open file hashtab1.txt\n");
+    if ((bstree_pFile_exp2 = fopen("../results/bstree2.txt", "w")) == NULL)
+        printf("Error open file bstree2.txt\n");
+    if ((hashtab_pFile_exp2 = fopen("../results/hashtab2.txt", "w")) == NULL)
+        printf("Error open file hashtab2.txt\n");
     srand(time(NULL));
-    if ((bstree_pFile = fopen("../results/bstree1.txt", "w")) == NULL)
-        printf("Не удалось открыть файл\n");
-    if ((hashtab_pFile = fopen("../results/hashtab1.txt", "w")) == NULL)
-        printf("Не удалось открыть файл\n");
     for (int i = 10000; i <= size; i += 10000) {
-        fprintf(bstree_pFile, "%d ", i);
-        fprintf(hashtab_pFile, "%d ", i);
+        fprintf(bstree_pFile_exp1, "%d ", i);
+        fprintf(hashtab_pFile_exp1, "%d ", i);
+        fprintf(bstree_pFile_exp2, "%d ", i);
+        fprintf(hashtab_pFile_exp2, "%d ", i);
         struct bstree* tree;
         tree = bstree_create(word[0], 0);
         hashtab_init(hashtab);
-        for (int j = 1; j < i; j++) {
+
+        start = clock();
+        for (int j = 1; j < i; j++)
             bstree_add(tree, word[j], j);
+        end = clock();
+        timer = difftime(end, start) / CLOCKS_PER_SEC;
+        fprintf(bstree_pFile_exp2, "%f\n", timer);
+
+        start = clock();
+        for (int j = 1; j < i; j++)
             hashtab_add(hashtab, word[j], j);
-        }
+        end = clock();
+        timer = difftime(end, start) / CLOCKS_PER_SEC;
+        fprintf(hashtab_pFile_exp2, "%f\n", timer);
 
         for (int k = 0; k < 5; k++) {
             num_word = 0 + rand() % (i - 0 + 1);
@@ -54,19 +73,19 @@ void experiment_one()
             bstree_find = bstree_lookup(tree, word[num_word]);
             end = clock();
             timer = difftime(end, start) / CLOCKS_PER_SEC;
-            fprintf(bstree_pFile, "%f ", timer);
+            fprintf(bstree_pFile_exp1, "%f ", timer);
 
             start = clock();
             hashtab_find = hashtab_lookup(hashtab, word[num_word]);
             end = clock();
             timer = difftime(end, start) / CLOCKS_PER_SEC;
-            fprintf(hashtab_pFile, "%f ", timer);
+            fprintf(hashtab_pFile_exp1, "%f ", timer);
         }
-        fprintf(bstree_pFile, "\n");
-        fprintf(hashtab_pFile, "\n");
+        fprintf(bstree_pFile_exp1, "\n");
+        fprintf(hashtab_pFile_exp1, "\n");
         bstree_free(tree);
     }
-    fclose(bstree_pFile);
-    fclose(hashtab_pFile);
+    fclose(bstree_pFile_exp1);
+    fclose(hashtab_pFile_exp1);
     printf("Experiment one complete!\n");
 }
