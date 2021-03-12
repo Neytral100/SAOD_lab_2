@@ -1,7 +1,7 @@
 waybin = bin/
 wayobj = obj/
 waysrc = src/
-objects = $(wayobj)main.o $(wayobj)bstree.o $(wayobj)hashtab.o $(wayobj)experiment1.o
+objects = $(wayobj)main.o $(wayobj)bstree.o $(wayobj)hashtab.o $(wayobj)experiment1.o $(wayobj)experiment2.o
 exeflags =  -Wall -Werror
 objflags = -c -Wall
 exe = $(waybin)prog
@@ -22,6 +22,9 @@ $(wayobj)hashtab.o: $(waysrc)hashtab.c
 
 $(wayobj)experiment1.o: $(waysrc)experiment1.c
 	gcc $(objflags) $(waysrc)experiment1.c -g -o $(wayobj)experiment1.o
+
+$(wayobj)experiment2.o: $(waysrc)experiment2.c
+	gcc $(objflags) $(waysrc)experiment2.c -g -o $(wayobj)experiment2.o
 
 obj:
 	mkdir obj
