@@ -1,30 +1,16 @@
 #include "bstree.h"
+#include "createarray.h"
 #include "hashtab.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
-void create_array(char** word, int size)
-{
-    int size_of_word = 21;
-    FILE* pFile;
-    if ((pFile = fopen("../results/text.txt", "r")) == NULL)
-        printf("Error open file\n");
-    for (int i = 0; i < size; i++) {
-        *(word + i) = malloc(sizeof(char) * size_of_word);
-        fgets(*(word + i), size_of_word, pFile);
-        for (int j = 0; j < size_of_word; j++)
-            if (*(*(word + i) + j * sizeof(char)) == '\n')
-                *(*(word + i) + j * sizeof(char)) = 0x0;
-    }
-    fclose(pFile);
-}
 
 void experiment_one()
 {
     clock_t start, end;
     float timer;
     int num_word;
+    pHash = KRhash;
     struct bstree* bstree_find;
     struct listnode* hashtab_find;
     int size = 200000;
@@ -45,6 +31,7 @@ void experiment_one()
         printf("Error open file hashtab2.txt\n");
     srand(time(NULL));
     for (int i = 10000; i <= size; i += 10000) {
+        printf("%d\n", i);
         fprintf(bstree_pFile_exp1, "%d ", i);
         fprintf(hashtab_pFile_exp1, "%d ", i);
         fprintf(bstree_pFile_exp2, "%d ", i);
@@ -62,7 +49,7 @@ void experiment_one()
 
         start = clock();
         for (int j = 1; j < i; j++)
-            hashtab_add(hashtab, word[j], j);
+            hashtab_add(hashtab, pHash, word[j], j);
         end = clock();
         timer = difftime(end, start) / CLOCKS_PER_SEC;
         fprintf(hashtab_pFile_exp2, "%f\n", timer);
@@ -76,7 +63,7 @@ void experiment_one()
             fprintf(bstree_pFile_exp1, "%f ", timer);
 
             start = clock();
-            hashtab_find = hashtab_lookup(hashtab, word[num_word]);
+            hashtab_find = hashtab_lookup(hashtab, pHash, word[num_word]);
             end = clock();
             timer = difftime(end, start) / CLOCKS_PER_SEC;
             fprintf(hashtab_pFile_exp1, "%f ", timer);

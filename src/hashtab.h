@@ -1,4 +1,6 @@
-#define HASHTAB_SIZE 5051
+#define HASHTAB_SIZE 234989
+
+unsigned int (*pHash)(char*);
 
 struct listnode {
     char* key;
@@ -9,8 +11,10 @@ struct listnode {
 
 struct listnode* hashtab[HASHTAB_SIZE];
 
-unsigned int hashtab_hash(char*);
+unsigned int KRhash(char*);
+unsigned int ELFhash(char*);
 void hashtab_init(struct listnode**);
-void hashtab_add(struct listnode**, char*, int);
-struct listnode* hashtab_lookup(struct listnode**, char*);
-void hashtab_delete(struct listnode**, char*);
+int hashtab_add(struct listnode**, unsigned int (*pHash)(char*), char*, int);
+struct listnode*
+hashtab_lookup(struct listnode**, unsigned int (*pHash)(char*), char*);
+void hashtab_delete(struct listnode**, unsigned int (*pHash)(char*), char*);
